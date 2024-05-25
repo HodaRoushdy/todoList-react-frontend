@@ -1,15 +1,19 @@
-import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
-import LoginPage from "../pages/Login"
-import PageNotFound from "../pages/PageNotFound";
-import RegisterPage from "../pages/Register";
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
+import ErrorHandler from "../components/errors/ErrorHandler";
 import HomePage from "../pages";
 import RootLayout from "../pages/Layout";
-import ErrorHandler from "../components/errors/ErrorHandler";
-const isLoggedIn = false
-const userData: { email: string } | null = isLoggedIn
-  ? { email: "email@gmail.com" }
-  : null;
+import LoginPage from "../pages/Login";
+import PageNotFound from "../pages/PageNotFound";
+import RegisterPage from "../pages/Register";
+const userDataKey = "loggedInUserData";
+const userDataString = localStorage.getItem(userDataKey);
+const userData = userDataString ? JSON.parse(userDataString) : null;
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -18,7 +22,7 @@ const router = createBrowserRouter(
           index
           element={
             <ProtectedRoute
-              isAllowed={isLoggedIn}
+              isAllowed={userData?.jwt}
               redirectPath="/login"
               data={userData}>
               <HomePage />
@@ -26,10 +30,21 @@ const router = createBrowserRouter(
           }
         />
         <Route
+          path="/profile"
+          element={
+            <ProtectedRoute
+              isAllowed={userData?.jwt}
+              redirectPath="/login"
+              data={userData}>
+              <h2>profile</h2>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="login"
           element={
             <ProtectedRoute
-              isAllowed={!isLoggedIn}
+              isAllowed={!userData?.jwt}
               redirectPath="/"
               data={userData}>
               <LoginPage />
@@ -40,7 +55,7 @@ const router = createBrowserRouter(
           path="register"
           element={
             <ProtectedRoute
-              isAllowed={!isLoggedIn}
+              isAllowed={!userData?.jwt}
               redirectPath="/login"
               data={userData}>
               <RegisterPage />
@@ -53,4 +68,4 @@ const router = createBrowserRouter(
     </>
   )
 );
-export default router
+export default router;

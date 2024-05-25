@@ -40,6 +40,9 @@ const RegisterPage = () => {
             width: "fit-content",
           },
         });
+        setTimeout(() => {
+          location.replace('/login')
+        }, 2000);
       }
     } catch (error) {
       const errorObj = error as AxiosError<IErrorForm>;
