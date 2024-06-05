@@ -8,3 +8,11 @@ export interface IErrorForm {
     };
   };
 }
+
+export interface ITodo {
+  id: number;
+  attributes: {
+    title: string;
+    description: string;
+  };
+}

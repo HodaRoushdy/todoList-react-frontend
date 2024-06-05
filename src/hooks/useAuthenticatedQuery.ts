@@ -3,22 +3,24 @@ import axiosInstance from "../config/axios.config";
 import { AxiosRequestConfig } from "axios";
 
 interface IAuthenticatedQuery {
-    queryKey: string[],
-    url: string,
-    config?: AxiosRequestConfig 
+  queryKey: string[];
+  url: string;
+  config?: AxiosRequestConfig;
 }
 
-const useAuthenticatedQuery = ({queryKey,url,config}: IAuthenticatedQuery) => {
+const useAuthenticatedQuery = ({
+  queryKey,
+  url,
+  config,
+}: IAuthenticatedQuery) => {
   return useQuery({
     queryKey: queryKey,
     queryFn: async () => {
-            const { data } = await axiosInstance.get(
-            url,config
-            );
-            return data;
-        },
-    });
+      const { data } = await axiosInstance.get(url, config);
+      // console.log(data);
+      return data;
+    },
+  });
 };
 
-
-export default useAuthenticatedQuery
+export default useAuthenticatedQuery;
