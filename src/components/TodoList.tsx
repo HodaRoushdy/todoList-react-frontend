@@ -1,4 +1,4 @@
-// import { useState } from "react";
+
 import { faker } from "@faker-js/faker";
 import { ChangeEvent, FormEvent, useState } from "react";
 import axiosInstance from "../config/axios.config";
@@ -12,17 +12,27 @@ import Skeleton from "./ui/Skeleton";
 import Textarea from "./ui/Textarea";
 
 const TodoList = () => {
+  // user information key which stored in local storage
   const userDataKey = "loggedInUserData";
   const userDataString = localStorage.getItem(userDataKey);
   const userData = userDataString ? JSON.parse(userDataString) : null;
+  // state to control open and close edit todo modal
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  // state to control open and close Add todo modal
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
-  const [queryVersion, setQueryVersion] = useState<number>(1);
-  const [isUpdating, setIsUpdating] = useState<boolean>(false);
-  const [page, setpage] = useState<number>(1);
-  const [pageSize, setpageSize] = useState<number>(10);
-  const [sortBy, setSortBy] = useState<string>("DESC");
+  // state to control open and close delete todo modal
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+  // to re-fetch data when apply any update on it
+  const [queryVersion, setQueryVersion] = useState<number>(1);
+  // equal to isLoading when apply edit on todo
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  // holds current page number
+  const [page, setpage] = useState<number>(1);
+  // holds page size number
+  const [pageSize, setpageSize] = useState<number>(10);
+  // holds the type of sorting
+  const [sortBy, setSortBy] = useState<string>("DESC");
+  // empty state to be filled with new updated todo
   const [todoToEdit, setTodoToEdit] = useState({
     id: 0,
     attributes: {
@@ -30,12 +40,15 @@ const TodoList = () => {
       description: "",
     },
   });
+  // move you to previous page
   const onClickPrev = () => {
     setpage((prev) => prev - 1);
   };
+  // move you to next page
   const onClickNext = () => {
     setpage((prev) => prev + 1);
   };
+  // generate fake todos to apply pagination
   const generateFakeTodos = async () => {
     for (let i = 0; i < 100; i++) {
       try {
@@ -60,19 +73,22 @@ const TodoList = () => {
       }
     }
   };
+  // empty state to hold new todo
   const [todoToAdd, setTodoToAdd] = useState({
     attributes: {
       title: "",
       description: "",
     },
   });
+  // change page size depend on user choice
   const onChangePageSize = (e: ChangeEvent<HTMLSelectElement>) => {
     setpageSize(+e.target.value);
   };
+  // change type of sorting depend on user choice
   const onChangeSortBy = (e: ChangeEvent<HTMLSelectElement>) => {
     setSortBy(e.target.value);
   };
-
+  // save entered values from user in empty state
   const onChangeAdd = (
     e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -81,7 +97,7 @@ const TodoList = () => {
       attributes: { ...todoToAdd.attributes, [name]: value },
     });
   };
-
+  // save new todo in database
   const onSubmitAdd = async () => {
     try {
       const { status } = await axiosInstance.post(
@@ -107,7 +123,7 @@ const TodoList = () => {
       setIsAddOpen(false);
     }
   };
-
+  // close add modal
   const onCloseAdd = () => {
     setTodoToAdd({
       attributes: {
@@ -118,6 +134,7 @@ const TodoList = () => {
     setIsAddOpen(false);
   };
 
+  // close edit modal
   const onCloseEdit = () => {
     setTodoToEdit({
       id: 0,
@@ -128,6 +145,7 @@ const TodoList = () => {
     });
     setIsEditOpen(false);
   };
+  // close confirmation for delete modal
   const onCloseConfirm = () => {
     setTodoToEdit({
       id: 0,
@@ -138,16 +156,17 @@ const TodoList = () => {
     });
     setIsConfirmModalOpen(false);
   };
-
+  // extract todo details when begins edit it
   const onOpenEdit = (todo: ITodo) => {
     setTodoToEdit(todo);
     setIsEditOpen(true);
   };
+  // extract todo details when begins remove it
   const onOpenRemove = (todo: ITodo) => {
     setTodoToEdit(todo);
     setIsConfirmModalOpen(true);
   };
-
+  // save entered values from user in empty state
   const onChangeHandler = (
     evt: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -158,6 +177,7 @@ const TodoList = () => {
     });
   };
 
+  // save updated todo in database
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsUpdating(true);
@@ -184,7 +204,7 @@ const TodoList = () => {
       setIsUpdating(false);
     }
   };
-
+  // remove selected todo from database
   const handleRemove = async () => {
     try {
       const { status } = await axiosInstance.delete(
@@ -203,22 +223,31 @@ const TodoList = () => {
       console.log(error);
     }
   };
-
+// fetching data from database using custom hook 
   const { isLoading, error, data, isFetching } = useAuthenticatedQuery({
     url: `http://localhost:1337/api/todos?pagination[pageSize]=${pageSize}&pagination[page]=${page}&sort=createdAt:${sortBy}`,
-    queryKey: ["todos", `${page}`, `${pageSize}`, `${sortBy}`],
+    // re-fetch data when edit in values of any of these
+    queryKey: [
+      "todos",
+      `${queryVersion}`,
+      `${page}`,
+      `${pageSize}`,
+      `${sortBy}`,
+    ],
     config: {
       headers: {
         Authorization: `Bearer ${userData.jwt}`,
       },
     },
   });
+  // open add modal when click on add button
   const handleOpenAdd = () => {
     setIsAddOpen(true);
   };
 
   if (isLoading)
     return (
+      // loading view
       <div className="flex flex-col gap-[1.5vw]">
         {Array.from({ length: 3 }, (_, idx) => (
           <Skeleton key={idx} />

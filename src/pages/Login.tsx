@@ -25,6 +25,7 @@ const LoginPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  // login and navigate to home page
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setIsLoading(true);
     try {

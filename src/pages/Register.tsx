@@ -25,7 +25,7 @@ const RegisterPage = () => {
   } = useForm<IFormInput>({ resolver: yupResolver(RegisterSchema) });
 
   const [isLoading, setIsLoading] = useState(false);
-
+// add new user to database
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setIsLoading(true);
     try {

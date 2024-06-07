@@ -18,6 +18,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<RootLayout />} errorElement={<ErrorHandler />}>
+        {/* the route for home page (accessed only by authorized user )*/}
         <Route
           index
           element={
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
+        {/* the route for profile page (accessed only by authorized user )*/}
         <Route
           path="/profile"
           element={
@@ -40,6 +42,7 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
+        {/* the route for login page */}
         <Route
           path="login"
           element={
@@ -51,6 +54,7 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
+        {/* the route for register page */}
         <Route
           path="register"
           element={
@@ -63,7 +67,7 @@ const router = createBrowserRouter(
           }
         />
       </Route>
-
+      {/* 404 page route */}
       <Route path="*" element={<PageNotFound />} />
     </>
   )

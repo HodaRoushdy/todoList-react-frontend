@@ -1,5 +1,6 @@
 import * as yup from "yup";
 
+// register form constrains and error messages
 export const RegisterSchema = yup.object({
   username: yup
     .string()
@@ -14,12 +15,12 @@ export const RegisterSchema = yup.object({
     .required()
     .matches(
       /^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$/,
-      "Password must contain at least one letter, at least one number, and be longer than six charaters."
+      "Password must contain at least one letter, at least one number, and be longer than six characters."
     )
     .min(6, "password length must be more than or equal to 6 "),
 }).required()
 
-
+// login form constrains and error messages
 export const LoginSchema = yup
   .object({
     identifier: yup
@@ -31,7 +32,7 @@ export const LoginSchema = yup
       .required()
       .matches(
         /^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$/,
-        "Password must contain at least one letter, at least one number, and be longer than six charaters."
+        "Password must contain at least one letter, at least one number, and be longer than six characters."
       )
       .min(6, "password length must be more than or equal to 6 "),
   })

@@ -6,6 +6,7 @@ const Navbar = () => {
   const userDataString = localStorage.getItem(userDataKey);
   const userData = userDataString ? JSON.parse(userDataString) : null;
   const { pathname } = useLocation();
+  // remove logged in user details from local storage and redirect to login page
   const onLogout = () => {
     localStorage.removeItem(userDataKey);
     setTimeout(() => {

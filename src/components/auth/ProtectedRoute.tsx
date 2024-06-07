@@ -8,6 +8,7 @@ interface IProps {
   data?: unknown,
   
 }
+// to prevent user from reaching to specific routes without login 
 const ProtectedRoute = ({isAllowed,redirectPath,children,data}:IProps) => {
   if (!isAllowed) return <Navigate to={redirectPath} replace state={data}/>
   return children

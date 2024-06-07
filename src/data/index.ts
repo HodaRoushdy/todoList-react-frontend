@@ -16,6 +16,7 @@ interface ILoginInput {
     minLength?: number;
   };
 }
+// inputs to register and there constraints
 export const RegisterData: IRegisterInput[] = [
   {
     placeholder: "Username",
@@ -43,7 +44,7 @@ export const RegisterData: IRegisterInput[] = [
     },
   },
 ];
-
+// inputs to login and there constraints
 export const LoginInputData: ILoginInput[] = [
   {
     placeholder: "Email adress",

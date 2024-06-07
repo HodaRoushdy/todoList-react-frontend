@@ -8,6 +8,7 @@ interface IAuthenticatedQuery {
   config?: AxiosRequestConfig;
 }
 
+// fetching data using useQuery
 const useAuthenticatedQuery = ({
   queryKey,
   url,

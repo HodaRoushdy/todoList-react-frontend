@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+// 404 page design
 const PageNotFound = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center w-screen h-screen">
