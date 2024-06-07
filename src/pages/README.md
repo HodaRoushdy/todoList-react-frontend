@@ -1,6 +1,6 @@
 # Todo List
 
-# you can see the deployed version in : https://coligo-platform.vercel.app/
+# you can see the deployed version in : https://todo-list-react-strapi.vercel.app
 
 ## Description
 
